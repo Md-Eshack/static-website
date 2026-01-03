@@ -10,11 +10,12 @@ jobs:
     steps:
       - checkout
 
-      # Install Terraform
-      - terraform/install:
-          terraform_version: 1.5.7
+      - run:
+          name: Install AWS CLI
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y awscli
 
-      # Configure AWS credentials
       - run:
           name: Configure AWS credentials
           command: |
@@ -23,18 +24,7 @@ jobs:
             echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
             echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
             echo "region=${AWS_DEFAULT_REGION}" >> ~/.aws/credentials
-
-      # --------------------
-      # Deploy S3 Static Website
-      # --------------------
-      - run:
-          name: Terraform Apply - S3 Static Website
-          command: |
-            cd terraform-s3-static-site
-            terraform init
-            terraform apply -auto-approve \
-              -var="bucket_name=${S3_BUCKET_NAME}"
-
+            
       - run:
           name: Upload Website Files to S3
           command: |
