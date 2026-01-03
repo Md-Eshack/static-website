@@ -30,7 +30,7 @@ jobs:
       - run:
           name: Terraform Apply - S3 Static Website
           command: |
-            cd terraform/s3-static-site
+            cd terraform-s3-static-site
             terraform init
             terraform apply -auto-approve \
               -var="bucket_name=${S3_BUCKET_NAME}"
@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Terraform Apply - Python API
           command: |
-            cd terraform/python-api
+            cd terraform-python-api
             terraform init
             terraform apply -auto-approve \
               -var="key_name=${EC2_KEY_NAME}"
