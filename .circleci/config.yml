@@ -46,7 +46,7 @@ jobs:
       - run:
           name: Upload Website Files to S3
           command: |
-            aws s3 sync website/ s3://${S3_BUCKET_NAME} --delete
+            aws s3 sync terraform-s3-static-site/website/ s3://${S3_BUCKET_NAME} --delete
 
       # --------------------
       # Deploy Python API
