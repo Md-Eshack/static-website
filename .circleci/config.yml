@@ -24,11 +24,11 @@ jobs:
             echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
             echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
             echo "region=${AWS_DEFAULT_REGION}" >> ~/.aws/credentials
-            
+
       - run:
           name: Terraform Apply - S3 Static Website
           command: |
-            cd terraform/s3-static-site
+            cd terraform-s3-static-site
             terraform init
             terraform apply -auto-approve \
               -var="bucket_name=${S3_BUCKET_NAME}"  
