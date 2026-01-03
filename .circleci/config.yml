@@ -26,6 +26,13 @@ jobs:
             echo "region=${AWS_DEFAULT_REGION}" >> ~/.aws/credentials
             
       - run:
+          name: Terraform Apply - S3 Static Website
+          command: |
+            cd terraform/s3-static-site
+            terraform init
+            terraform apply -auto-approve \
+              -var="bucket_name=${S3_BUCKET_NAME}"  
+      - run:
           name: Upload Website Files to S3
           command: |
             aws s3 sync website/ s3://${S3_BUCKET_NAME} --delete
