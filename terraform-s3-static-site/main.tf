@@ -7,13 +7,7 @@ terraform {
       version = "~> 5.0"
     }
   }
-}
 
-provider "aws" {
-  region = var.aws_region
-}
-
-terraform {
   backend "s3" {
     bucket = "tf-state-static-eshack"
     key    = "terraform-s3-static-site/terraform.tfstate"
@@ -21,13 +15,8 @@ terraform {
   }
 }
 
-
-terraform {
-  backend "s3" {
-    bucket = "tf-state-static-eshack"
-    key    = "terraform-python-api/terraform.tfstate"
-    region = "eu-north-1"
-  }
+provider "aws" {
+  region = var.aws_region
 }
 
 resource "aws_s3_bucket" "website_bucket" {
