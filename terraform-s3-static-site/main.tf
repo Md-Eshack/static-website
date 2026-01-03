@@ -13,6 +13,23 @@ provider "aws" {
   region = var.aws_region
 }
 
+terraform {
+  backend "s3" {
+    bucket = "tf-state-static-eshack"
+    key    = "terraform-s3-static-site/terraform.tfstate"
+    region = "eu-north-1"
+  }
+}
+
+
+terraform {
+  backend "s3" {
+    bucket = "tf-state-static-eshack"
+    key    = "terraform-python-api/terraform.tfstate"
+    region = "eu-north-1"
+  }
+}
+
 resource "aws_s3_bucket" "website_bucket" {
   bucket = var.bucket_name
 
