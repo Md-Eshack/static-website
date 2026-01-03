@@ -1,0 +1,2 @@
+Access Key: AKIA2YGX4KGNNPMWE23O
+Secret: 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

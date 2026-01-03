@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cloud Static Website + Python API</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="container">
+      <h1>Cloud Static Website</h1>
+      <p class="subtitle">
+        Hosted on AWS S3 • CI/CD later with CircleCI • API integration with Python
+      </p>
+
+      <div class="card">
+        <h2>API Status</h2>
+        <p id="apiStatus" class="status loading">Not checked yet</p>
+        <div class="row">
+          <input id="apiUrl" type="url" placeholder="Paste API URL (later) e.g. https://xxxx/health" />
+          <button id="checkBtn">Check</button>
+        </div>
+        <small class="hint">
+          In Setup 2, you will deploy Python API. Then paste its /health endpoint here.
+        </small>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main">
+    <section class="grid">
+      <div class="panel">
+        <h3>Objective</h3>
+        <p>
+          Demonstrate scalable static hosting on cloud storage (AWS S3) as part of an end-to-end IaC + CI/CD project.
+        </p>
+      </div>
+      <div class="panel">
+        <h3>Next</h3>
+        <p>
+          Build a lightweight Python API (Flask/FastAPI), then automate infra + deployments using Terraform and CircleCI.
+        </p>
+      </div>
+      <div class="panel">
+        <h3>Notes</h3>
+        <ul>
+          <li>Static website = low cost + high durability</li>
+          <li>S3 Website Endpoint serves HTML/CSS/JS</li>
+          <li>Public read is limited to site objects only</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <span>© <span id="year"></span> Student Project — Cloud + DevOps + Python</span>
+    </div>
+  </footer>
+
+  <script src="./script.js"></script>
+</body>
+</html>

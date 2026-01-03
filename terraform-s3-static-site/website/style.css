@@ -1,0 +1,93 @@
+:root{
+  --bg:#0b1020;
+  --panel:rgba(255,255,255,.06);
+  --panel2:rgba(255,255,255,.10);
+  --text:#eaf0ff;
+  --muted:rgba(234,240,255,.75);
+  --border:rgba(234,240,255,.14);
+  --good:#41d19a;
+  --bad:#ff5a6b;
+  --warn:#ffd166;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(90,120,255,.22), transparent 60%),
+              radial-gradient(900px 500px at 80% 10%, rgba(0,255,200,.12), transparent 55%),
+              var(--bg);
+  color:var(--text);
+}
+
+.container{max-width:1000px;margin:0 auto;padding:24px}
+.hero{padding:52px 0 32px;border-bottom:1px solid var(--border)}
+h1{font-size:42px;margin:0 0 10px}
+.subtitle{margin:0 0 22px;color:var(--muted);line-height:1.6}
+
+.card{
+  padding:18px;
+  background: linear-gradient(180deg, var(--panel), rgba(255,255,255,.04));
+  border:1px solid var(--border);
+  border-radius:16px;
+  backdrop-filter: blur(8px);
+}
+
+.card h2{margin:0 0 10px;font-size:18px}
+.hint{display:block;margin-top:10px;color:var(--muted)}
+
+.row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+input{
+  flex:1 1 360px;
+  padding:12px 12px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: rgba(0,0,0,.25);
+  color:var(--text);
+  outline:none;
+}
+button{
+  flex:0 0 auto;
+  padding:12px 16px;
+  border-radius:12px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.10);
+  color:var(--text);
+  cursor:pointer;
+}
+button:hover{background: rgba(255,255,255,.16)}
+
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background: rgba(0,0,0,.18);
+  font-weight:600;
+}
+.status.loading{color:var(--warn)}
+.status.ok{color:var(--good)}
+.status.fail{color:var(--bad)}
+
+.main{padding:28px 24px}
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap:14px;
+}
+.panel{
+  background: var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:16px;
+}
+.panel h3{margin:0 0 8px}
+.panel p, .panel li{color:var(--muted);line-height:1.6}
+.footer{padding:18px 0;border-top:1px solid var(--border);color:var(--muted)}
+
+@media (max-width: 900px){
+  h1{font-size:34px}
+  .grid{grid-template-columns:1fr}
+}
+
