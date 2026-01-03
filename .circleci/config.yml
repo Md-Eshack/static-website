@@ -6,7 +6,7 @@ orbs:
 jobs:
   deploy:
     docker:
-      - image: cimg/base:stable
+      - image: hashicorp/terraform:1.14
     steps:
       - checkout
 
