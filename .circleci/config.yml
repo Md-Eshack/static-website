@@ -4,6 +4,9 @@ orbs:
   terraform: circleci/terraform@3.2.1
 
 jobs:
+  # --------------------
+  # DEPLOY JOB
+  # --------------------
   deploy:
     docker:
       - image: cimg/base:stable
@@ -15,7 +18,7 @@ jobs:
           command: |
             sudo apt-get update
             sudo apt-get install -y awscli
-      
+
       - run:
           name: Install Terraform
           command: |
@@ -42,15 +45,13 @@ jobs:
             cd terraform-s3-static-site
             terraform init
             terraform apply -auto-approve \
-              -var="bucket_name=${S3_BUCKET_NAME}"  
+              -var="bucket_name=${S3_BUCKET_NAME}"
+
       - run:
           name: Upload Website Files to S3
           command: |
             aws s3 sync terraform-s3-static-site/website/ s3://${S3_BUCKET_NAME} --delete
 
-      # --------------------
-      # Deploy Python API
-      # --------------------
       - run:
           name: Terraform Apply - Python API
           command: |
@@ -59,8 +60,82 @@ jobs:
             terraform apply -auto-approve \
               -var="key_name=${EC2_KEY_NAME}"
 
+  # --------------------
+  # DESTROY JOB
+  # --------------------
+  terraform_destroy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+
+      - run:
+          name: Install AWS CLI
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y awscli
+
+      - run:
+          name: Install Terraform
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y unzip curl
+            TERRAFORM_VERSION=1.6.6
+            curl -fsSL https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip -o terraform.zip
+            unzip terraform.zip
+            sudo mv terraform /usr/local/bin/
+            terraform --version
+
+      - run:
+          name: Configure AWS credentials
+          command: |
+            mkdir -p ~/.aws
+            echo "[default]" > ~/.aws/credentials
+            echo "aws_access_key_id=${AWS_ACCESS_KEY_ID}" >> ~/.aws/credentials
+            echo "aws_secret_access_key=${AWS_SECRET_ACCESS_KEY}" >> ~/.aws/credentials
+            echo "region=${AWS_DEFAULT_REGION}" >> ~/.aws/credentials
+
+      - run:
+          name: Terraform Destroy - S3 Static Website
+          command: |
+            cd terraform-s3-static-site
+            terraform init
+            terraform destroy -auto-approve \
+              -var="bucket_name=${S3_BUCKET_NAME}"
+
+      - run:
+          name: Terraform Destroy - Python API
+          command: |
+            cd terraform-python-api
+            terraform init
+            terraform destroy -auto-approve \
+              -var="key_name=${EC2_KEY_NAME}"
+
+# --------------------
+# WORKFLOWS
+# --------------------
 workflows:
   version: 2
   deploy_pipeline:
     jobs:
-      - deploy
+      - deploy:
+          filters:
+            branches:
+              only: main
+
+      # Manual approval (main branch only)
+      - hold_destroy:
+          type: approval
+          requires:
+            - deploy
+          filters:
+            branches:
+              only: main
+
+      # Destroy runs ONLY after approval on main
+      - terraform_destroy:
+          requires:
+            - hold_destroy
+          filters:
+            branches:
+              only: main
